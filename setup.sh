@@ -58,3 +58,20 @@ echo "$(minikube ip) stilton.minikube cheddar.minikube wensleydale.minikube trae
 minikube service --namespace=kube-system traefik-web-ui
 
 echo "Visit http://traefik-ui.minikube/"
+
+# Let's move on with Prometheus / Grafana
+# Based on: https://github.com/bakins/minikube-prometheus-demo
+kubectl create -f https://raw.githubusercontent.com/bakins/minikube-prometheus-demo/master/monitoring-namespace.yaml
+kubectl create -f https://raw.githubusercontent.com/bakins/minikube-prometheus-demo/master/prometheus-config.yaml
+kubectl create -f https://raw.githubusercontent.com/bakins/minikube-prometheus-demo/master/prometheus-deployment.yaml
+kubectl create -f https://raw.githubusercontent.com/bakins/minikube-prometheus-demo/master/prometheus-service.yaml
+kubectl create -f https://raw.githubusercontent.com/bakins/minikube-prometheus-demo/master/grafana-deployment.yaml
+kubectl create -f https://raw.githubusercontent.com/bakins/minikube-prometheus-demo/master/grafana-service.yaml
+kubectl create -f https://raw.githubusercontent.com/bakins/minikube-prometheus-demo/master/node-exporter-daemonset.yml
+
+kubectl get services --namespace=monitoring
+kubectl get deployments --namespace=monitoring
+
+minikube service --namespace=monitoring prometheus
+minikube service --namespace=monitoring grafana
+
